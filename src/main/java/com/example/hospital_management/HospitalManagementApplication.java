@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.example.hospital_management.repositories.PatientRepository;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
 
@@ -33,4 +34,9 @@ public class HospitalManagementApplication {
             patientRepository.save(new Patient(null,"SalahEddin",new Date(),false,82));
         };
     }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
+    }
+
 }

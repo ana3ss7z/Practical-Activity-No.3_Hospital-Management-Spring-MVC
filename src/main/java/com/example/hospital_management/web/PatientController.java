@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PatientController {
     private PatientRepository patientRepository;
-    @GetMapping("/index")
+    @GetMapping("/user/index")
     public String index(Model model, @RequestParam(name = "page",defaultValue = "0") int page,
                         @RequestParam(name = "size",defaultValue = "5")int size,
                         @RequestParam(name = "keyword",defaultValue = "") String k) {
@@ -31,29 +31,29 @@ public class PatientController {
         return "patients";
 
     }
-    @GetMapping("/delete")
+    @GetMapping("/admin/delete")
     public String delete(Long id,String Kw, int page){
         patientRepository.deleteById(id);
-        return "redirect:/index?keyword="+Kw+"&page="+page;
+        return "redirect:/user/index?keyword="+Kw+"&page="+page;
     }
 
     @GetMapping("/")
     public String home(){
-        return "redirect:/index";
+        return "redirect:/user/index";
     }
 
-    @GetMapping("/formPatients")
+    @GetMapping("/admin/formPatients")
     public String formPatients(Model model){
         model.addAttribute("patient",new Patient());
         return "formPatients";
     }
-    @PostMapping("/save")
+    @PostMapping("/admin/save")
     public String save(Model model , @Valid Patient patient, BindingResult bindingResult, String Kw, int page){
         if(bindingResult.hasErrors()) return "formPatients";
         patientRepository.save(patient);
-        return "redirect:/index?keyword="+Kw+"&page="+page;
+        return "redirect:/user/index?keyword="+Kw+"&page="+page;
     }
-    @GetMapping("/edit")
+    @GetMapping("/admin/edit")
     public  String edit(Model model,Long id, String Kw, int page){
         Patient patient = patientRepository.findById(id).orElse(null);
         if(patient==null) throw new RuntimeException("Patient not found");

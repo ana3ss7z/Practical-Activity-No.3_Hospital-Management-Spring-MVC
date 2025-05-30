@@ -12,7 +12,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/index}">Hospital Management</a>
+        <a class="navbar-brand" th:href="@{/user/index}">Hospital Management</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -21,7 +21,7 @@
 
         <div class="collapse navbar-collapse flex" id="navbarNavDropdown">
             <ul class="navbar-nav">
-                <li class="nav-item active"><a class="nav-link" th:href="@{/index}">Home</a></li>
+                <li class="nav-item active"><a class="nav-link" th:href="@{/user/index}">Home</a></li>
 <!--                <li class="nav-item"><a class="nav-link" href="#">Page 1</a></li>-->
 <!--                <li class="nav-item"><a class="nav-link" href="#">Page 2</a></li>-->
 <!--                <li class="nav-item"><a class="nav-link" href="#">Page 3</a></li>-->
@@ -31,20 +31,24 @@
                         Gestion des Patients
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" th:href="@{/formPatients}">Ajouter Patient</a></li>
-                        <li><a class="dropdown-item" th:href="@{/index}">Chercher Patient</a></li>
+                        <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}"><a class="dropdown-item" th:href="@{/admin/formPatients}">Ajouter Patient</a></li>
+                        <li><a class="dropdown-item" th:href="@{/user/index}">Chercher Patient</a></li>
                     </ul>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto" >
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        [Username]
+                       data-bs-toggle="dropdown" aria-expanded="false" th:text="${#authentication.name}">
+
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#">Profil</a></li>
-                        <li><a class="dropdown-item text-danger" th:href="@{index}">LogOut</a></li>
+                        <li>
+                            <form method="post" th:action="@{/logout}">
+                                  <button type="submit" class="dropdown-item text-danger">LogOut</button>
+                            </form>
+                        </li>
                     </ul>
                 </li>
             </ul>

@@ -2,12 +2,15 @@ package com.example.hospital_management.web;
 
 import com.example.hospital_management.entites.Patient;
 import com.example.hospital_management.repositories.PatientRepository;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -38,4 +41,28 @@ public class PatientController {
     public String home(){
         return "redirect:/index";
     }
+
+    @GetMapping("/formPatients")
+    public String formPatients(Model model){
+        model.addAttribute("patient",new Patient());
+        return "formPatients";
+    }
+    @PostMapping("/save")
+    public String save(Model model , @Valid Patient patient, BindingResult bindingResult, String Kw, int page){
+        if(bindingResult.hasErrors()) return "formPatients";
+        patientRepository.save(patient);
+        return "redirect:/index?keyword="+Kw+"&page="+page;
+    }
+    @GetMapping("/edit")
+    public  String edit(Model model,Long id, String Kw, int page){
+        Patient patient = patientRepository.findById(id).orElse(null);
+        if(patient==null) throw new RuntimeException("Patient not found");
+//        if(bindingResult.hasErrors()) return "editPatients";
+        model.addAttribute("patient",patient);
+        model.addAttribute("keyword",Kw);
+        model.addAttribute("page",page);
+        return "editPatient";
+
+    }
+
 }

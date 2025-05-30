@@ -1,5 +1,8 @@
 <!doctype html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="navBar">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -9,6 +12,7 @@
     <title>Patients</title>
 </head>
 <body>
+<div layout:fragment="content1">
 <div class="p-4">
     <div class="card">
         <div class="card-header bg-danger">
@@ -45,7 +49,11 @@
                     <td th:text="${p.dateNaissance}"></td>
                     <td th:text="${p.malade}"></td>
                     <td th:text="${p.score}"></td>
-                    <td ><a onclick="return confirm('Vous etes sur ??')" th:href="@{delete(id = ${p.id},Kw=${keyword},page=${currentPage})}" class="btn btn-danger">Delete</a></td>
+                    <td ><a onclick="return confirm('Vous etes sur ??')"
+                            th:href="@{delete(id = ${p.id},Kw=${keyword},page=${currentPage})}"
+                            class="btn btn-danger">Delete</a></td>
+                    <td ><a th:href="@{edit(id = ${p.id},Kw=${keyword},page=${currentPage})}"
+                            class="btn btn-primary">Edit</a></td>
                 </tr>
             </table>
             <div class="card-footer flex">
@@ -62,5 +70,6 @@
 <div><h1>
 
 </h1></div>
+</div>
 </body>
 </html>

@@ -32,7 +32,7 @@ public class PatientController {
 
     }
     @GetMapping("/admin/delete")
-    public String delete(Long id,String Kw, int page){
+    public String delete(Long id,@RequestParam(name = "keyword", defaultValue = "") String Kw,@RequestParam(name = "page", defaultValue = "0")  int page){
         patientRepository.deleteById(id);
         return "redirect:/user/index?keyword="+Kw+"&page="+page;
     }
@@ -48,7 +48,7 @@ public class PatientController {
         return "formPatients";
     }
     @PostMapping("/admin/save")
-    public String save(Model model , @Valid Patient patient, BindingResult bindingResult, String Kw, int page){
+    public String save(Model model , @Valid Patient patient, BindingResult bindingResult,@RequestParam(name = "keyword", defaultValue = "")  String Kw,@RequestParam(name = "page", defaultValue = "0") int page){
         if(bindingResult.hasErrors()) return "formPatients";
         patientRepository.save(patient);
         return "redirect:/user/index?keyword="+Kw+"&page="+page;
@@ -57,12 +57,10 @@ public class PatientController {
     public  String edit(Model model,Long id, String Kw, int page){
         Patient patient = patientRepository.findById(id).orElse(null);
         if(patient==null) throw new RuntimeException("Patient not found");
-//        if(bindingResult.hasErrors()) return "editPatients";
         model.addAttribute("patient",patient);
         model.addAttribute("keyword",Kw);
         model.addAttribute("page",page);
         return "editPatient";
-
     }
 
 }
